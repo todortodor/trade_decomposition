@@ -10,7 +10,7 @@ import utils as u
 import numpy as np
 import os
 
-results_path='./results_custom/'
+results_path='./results_more/'
 try:
     os.mkdir(results_path)
 except:
@@ -21,8 +21,8 @@ baseline = u.baseline()
 baseline.make_np_arrays(inplace = True)
 baseline.compute_shares_and_gammas(inplace = True)
 
-carb_cost_list = np.concatenate([np.linspace(0,100,101),
-                                 np.linspace(100,1000,91)[1:]])
+carb_cost_list = np.concatenate([np.linspace(0,100,1001),
+                                 np.linspace(100,1000,901)[1:]])
 vec_init = None
 
 for carb_cost in carb_cost_list:
@@ -34,13 +34,13 @@ for carb_cost in carb_cost_list:
                         baseline=baseline, 
                         vec_init = vec_init, 
                         tol=1e-9, 
-                        damping=5)
+                        damping=2)
     vec_init = np.concatenate([results['E_hat'].ravel(),
                                results['I_hat'].ravel(),
                                results['p_hat'].ravel()])
 
     u.write_solution_csv(results=results,
-                         results_path='./results_test/',
-                         run_name =str(round(carb_cost)),
+                         results_path=results_path,
+                         run_name =str(round(carb_cost,1)),
                          params = par)
 

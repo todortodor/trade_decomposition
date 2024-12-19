@@ -14,25 +14,28 @@ sns.set()
 sns.set_context('talk')
 sns.set_style('whitegrid')
 
-results_folder = 'results'
+results_folder = 'results_more'
 
 baseline = u.baseline()
 
 baseline.make_np_arrays(inplace = True)
 baseline.compute_shares_and_gammas(inplace = True)
 
-carb_cost_list = np.concatenate([np.linspace(0,100,101),
-                                 np.linspace(100,1000,91)[1:]])
+# carb_cost_list = np.concatenate([np.linspace(0,100,101),
+#                                  np.linspace(100,1000,91)[1:]])
+carb_cost_list = np.concatenate([np.linspace(0,100,1001),
+                                 np.linspace(100,1000,901)[1:]])
 
 sols = []
 for carb_cost in carb_cost_list:
     print(carb_cost)
-    sol = u.sol(results_path=f'{results_folder}/{str(round(carb_cost))}_results.csv', 
+    # sol = u.sol(results_path=f'{results_folder}/{str(round(carb_cost))}_results.csv', 
+    sol = u.sol(results_path=f'{results_folder}/{str(round(carb_cost,1))}_results.csv', 
                 baseline=baseline,
                 carb_cost=carb_cost)
     sol.compute_solution(baseline)
     sols.append(sol)
-
+    
 S = baseline.sector_number
 N = baseline.country_number
 
@@ -133,10 +136,10 @@ ax[1].stackplot(carb_cost_list,y,
 offset = -0.005
 for i,term_label in enumerate(term_labels.values()):
     term = [l_term_1,l_term_2,l_term_3][i]
-    loc = 142
+    loc = 1450
     ax[1].text(carb_cost_list[loc], 
                -(term[loc]/sum_terms[loc])/2+offset, 
-               term_label+' : '+str(((term[70]/sum_terms[70]).mean()*100).round(1))+'%',
+               term_label+' : '+str(((term[999]/sum_terms[999]).mean()*100).round(1))+'%',
                ha='center', va='center',color='black',fontsize = 20)
     offset = offset-(term[1:]/sum_terms[1:])[loc]
     
